@@ -154,7 +154,7 @@ class Password implements GrantTypeInterface {
         $userId = call_user_func($this->getVerifyCredentialsCallback(), $authParams['username'], $authParams['password']);
 
         if ($userId === false) {
-            throw new Exception\ClientException($this->authServer->getExceptionMessage('invalid_credentials'), 0);
+            throw new Exception\ClientException($userId, 0);
         }
 
         // Validate any scopes that are in the request
