@@ -153,7 +153,7 @@ class Password implements GrantTypeInterface {
         // Check if user's username and password are correct
         $userId = call_user_func($this->getVerifyCredentialsCallback(), $authParams['username'], $authParams['password']);
 
-        if ($userId === false) {
+        if (!is_numeric($userId)) {
             throw new Exception\ClientException($userId, 0);
         }
 
