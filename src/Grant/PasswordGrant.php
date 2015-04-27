@@ -127,13 +127,9 @@ class PasswordGrant extends AbstractGrant
         // Check if user's username and password are correct
         $userId = call_user_func($this->getVerifyCredentialsCallback(), $username, $password);
 
-        // if ($userId === false) {
-        //     $this->server->getEventEmitter()->emit(new Event\UserAuthenticationFailedEvent($this->server->getRequest()));
-        //     throw new Exception\InvalidCredentialsException();
-        // }
-        
         if (!is_numeric($userId) && preg_match('/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/', $userId) != 1) {
-            throw new Exception\ClientException($userId, 0);
+          $this->server->getEventEmitter()->emit(new Event\UserAuthenticationFailedEvent($this->server->getRequest()));
+          throw new Exception\OAuthException($userId);
         }
 
         // Validate any scopes that are in the request
